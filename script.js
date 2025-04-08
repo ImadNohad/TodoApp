@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         localStorage.setItem("tasks", JSON.stringify(tasks))
     }
 
+    //Dark Mode / Light Mode Toggle
     document.querySelector("header img").addEventListener("click", function () {
         let dark = document.body.classList.contains("dark")
         document.body.classList.toggle("dark")

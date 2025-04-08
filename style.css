@@ -229,7 +229,8 @@ body.dark {
 
 body.dark .newTask,
 body.dark .task,
-body.dark .filter {
+body.dark .filter
+body.dark .filter-mobile {
     background-color: var(--d-very-dark-desaturated-blue);
 }
 
