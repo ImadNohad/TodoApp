@@ -92,22 +92,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
         saveTasks()
     });
 
-    document.querySelector(".filter").addEventListener('click', (e) => {
-        if (e.target.classList.contains('clearCompleted')) {
+    [document.querySelector(".filter"),document.querySelector(".filter-mobile")].forEach(element => {
+        element.addEventListener('click', (e) => {
             e.preventDefault()
-            clearCompledted()
-        }
-        if (e.target.classList.contains('option')) {
-            e.preventDefault()
-            let options = this.querySelectorAll(".option")
-            Array.from(options).forEach(element => {
-                element.classList.remove("selected")
-            });
-            let option = e.target.textContent.toLowerCase()
-            e.target.classList.add("selected")
-            filterTasks(option)
-            updateCount()
-        }
+            if (e.target.classList.contains('clearCompleted')) {
+                clearCompledted()
+            }
+            if (e.target.classList.contains('option')) {
+                let options = this.querySelectorAll(".option")
+                Array.from(options).forEach(element => {
+                    element.classList.remove("selected")
+                });
+                let option = e.target.textContent.toLowerCase()
+                e.target.classList.add("selected")
+                filterTasks(option)
+                updateCount()
+            }
+        });
     });
 
     const newTask = document.querySelector("#txtNew")
