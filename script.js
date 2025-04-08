@@ -38,8 +38,10 @@
 
 document.addEventListener("DOMContentLoaded", function (event) {
     const tasklist = document.querySelector('.tasklist');
-    let tasks = localStorage.getItem("tasks") !== undefined ? JSON.parse(localStorage.getItem("tasks")) : []
+    let tasks = localStorage.getItem("tasks") !== null ? JSON.parse(localStorage.getItem("tasks")) : []
     let filteredTasks = tasks
+
+    console.log(tasks);
 
     loadTasks(tasks)
 
@@ -147,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function updateCount() {
         const taskCount = document.querySelector(".itemsLeft")
-        taskCount.textContent = tasks.filter(e => !e.completed).length
+        taskCount.textContent = tasks.filter(e => !e.completed).length 
     }
 
     function saveTasks(){
