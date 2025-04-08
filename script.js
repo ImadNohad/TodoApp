@@ -37,8 +37,36 @@
 // }
 
 document.addEventListener("DOMContentLoaded", function (event) {
+
+    const data = [
+        {
+            "title": "Complete online Javascript course",
+            "completed": false
+        },
+        {
+            "title": "Jog around the park 3x",
+            "completed": false
+        },
+        {
+            "title": "10 minutes meditation",
+            "completed": false
+        },
+        {
+            "title": "Read for 1 hour",
+            "completed": false
+        },
+        {
+            "title": "Pick up groceries",
+            "completed": false
+        },
+        {
+            "title": "Complete TodoApp on Frontend Mentor",
+            "completed": false
+        }
+    ]
+
     const tasklist = document.querySelector('.tasklist');
-    let tasks = localStorage.getItem("tasks") !== null ? JSON.parse(localStorage.getItem("tasks")) : []
+    let tasks = localStorage.getItem("tasks") !== null ? JSON.parse(localStorage.getItem("tasks")) : data
     let filteredTasks = tasks
 
     console.log(tasks);
@@ -90,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     })
 
-    function loadTasks(tasks){
+    function loadTasks(tasks) {
         tasklist.innerHTML = ""
         tasks.forEach((element, index) => {
             populateTask(element, index)
@@ -105,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let cbTask = document.createElement("input")
         cbTask.type = "checkbox"
         cbTask.className = "cbComplete"
-        if (task.completed) cbTask.setAttribute("checked","")
+        if (task.completed) cbTask.setAttribute("checked", "")
         taskDiv.appendChild(cbTask)
         taskDiv.innerHTML += `<p class="taskText">${task.title}</p><img class="remove" src="images/icon-cross.svg" alt="">`
         console.log(taskDiv);
@@ -131,15 +159,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function filterTasks(category) {
-        if(category == "active") {
+        if (category == "active") {
             filteredTasks = tasks.filter(e => !e.completed)
         }
 
-        if(category == "all") {
+        if (category == "all") {
             filteredTasks = tasks
         }
 
-        if(category == "completed") {
+        if (category == "completed") {
             filteredTasks = tasks.filter(e => e.completed)
         }
 
@@ -149,14 +177,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function updateCount() {
         const taskCount = document.querySelector(".itemsLeft")
-        taskCount.textContent = tasks.filter(e => !e.completed).length 
+        taskCount.textContent = tasks.filter(e => !e.completed).length
     }
 
-    function saveTasks(){
+    function saveTasks() {
         localStorage.setItem("tasks", JSON.stringify(tasks))
     }
 
-    document.querySelector("header img").addEventListener("click", function(){
+    document.querySelector("header img").addEventListener("click", function () {
         let dark = document.body.classList.contains("dark")
         document.body.classList.toggle("dark")
         this.src = dark ? "images/icon-moon.svg" : "images/icon-sun.svg"
