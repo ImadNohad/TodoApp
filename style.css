@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+    --l-very-ligh-gray: hsl(0, 0%, 98%);
+    --l-very-light-grayish-blue: hsl(236, 33%, 92%);
+    --l-light-grayish-blue: hsl(233, 11%, 84%);
+    --l-dark-grayish-blue: hsl(236, 9%, 61%);
+    --l-very-dark-grayish-blue: hsl(235, 19%, 35%);
+    --d-very-dark-blue: hsl(235, 21%, 11%);
+    --d-very-dark-desaturated-blue: hsl(235, 24%, 19%);
+    --d-light-grayish-blue: hsl(234, 39%, 85%);
+    --d-dark-grayish-blue: hsl(234, 11%, 52%);
+    --d-very-dark-grayish-blue: hsl(233, 14%, 35%);
+    --d-very-dark-grayish-blue2: hsl(237, 14%, 26%);
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Josefin Sans';
+    background-color: hsl(236, 33%, 92%);
+    background-image: url("images/bg-desktop-light.jpg");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100% 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.1rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+input[type="text"] {
+    width: 100%;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--l-very-dark-grayish-blue);
+    caret-color: hsl(220, 98%, 61%);
+}
+
+input::placeholder {
+    font-family: 'Josefin Sans';
+    color: var(--l-dark-grayish-blue);
+}
+
+input:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--l-light-grayish-blue);
+}
+
+.wrapper {
+    width: 38%;
+    margin: 0 auto;
+    padding: 3rem 0;
+    min-height: 90vh;
+}
+
+.logo {
+    color: white;
+    font-size: 30px;
+    letter-spacing: 0.75rem;
+    font-weight: 700;
+    height: 100%;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.newTask,
+.task,
+.filter,
+.filter-mobile {
+    background-color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--l-very-light-grayish-blue);
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background: url("images/icon-check.svg"), linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%, cover;
+}
+
+input[type="checkbox"]:not(:checked):hover {
+    border-color: transparent;
+    background-image: linear-gradient(#fff, #fff), linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+.newTask #txtNew {
+    padding: 0.5rem 0;
+    flex: 8
+}
+
+.taskList {
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.task {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--l-very-light-grayish-blue);
+    border-radius: 0;
+    cursor: grab;
+    transition: transform 0.3s ease-in-out;
+}
+
+.task input[type="checkbox"]:checked~.taskText {
+    text-decoration: line-through;
+    color: var(--l-light-grayish-blue);
+}
+
+.task .remove {
+    display: none;
+    cursor: pointer;
+}
+
+.task:hover .remove {
+    display: block;
+}
+
+.task:first-child {
+    border-radius: 5px 5px 0 0;
+}
+
+.task p {
+    color: var(--l-very-dark-grayish-blue);
+    flex: 8
+}
+
+.task button {
+    background: transparent;
+    border: none;
+    display: none;
+}
+
+.filter {
+    color: var(--l-dark-grayish-blue);
+    font-size: 0.85rem;
+    border-radius: 0 0 5px 5px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.filter a,
+.filter-mobile a {
+    color: var(--l-dark-grayish-blue);
+}
+
+.filter a.selected,
+.filter-mobile a.selected {
+    color: hsl(220, 98%, 61%);
+}
+
+.filter a:hover,
+.filter-mobile a:hover {
+    color: var(--l-very-dark-grayish-blue);
+}
+
+.filter>span {
+    margin-right: 4rem;
+}
+
+.filter>div,
+.filter-mobile>div {
+    display: flex;
+    gap: 1rem;
+    font-weight: 700;
+}
+
+.filter-mobile {
+    font-size: 0.85rem;
+    background-color: white;
+    display: none;
+    justify-content: space-around;
+    border-radius: 10px;
+}
+
+footer {
+    padding-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--l-dark-grayish-blue);
+    text-align: center;
+}
+
+/* Dark Mode */
+
+body.dark {
+    background-color: var(--d-very-dark-blue);
+    background-image: url("images/bg-desktop-dark.jpg");
+}
+
+body.dark .newTask,
+body.dark .task,
+body.dark .filter {
+    background-color: var(--d-very-dark-desaturated-blue);
+}
+
+body.dark .task {
+    border-bottom: 1px solid var(--d-very-dark-grayish-blue2);
+}
+
+body.dark input[type="checkbox"] {
+    border: 2px solid var(--d-very-dark-grayish-blue2);
+}
+
+body.dark input[type="text"] {
+    color: var(--l-very-dark-grayish-blue);
+    caret-color: hsl(220, 98%, 61%);
+    background-color: var(--d-very-dark-desaturated-blue);
+}
+
+body.dark .task input[type="checkbox"]:checked~.taskText {
+    color: var(--l-very-dark-grayish-blue);
+}
+
+body.dark .task p {
+    color: var(--l-light-grayish-blue);
+}
+
+body.dark input[type="text"] {
+    color: var(--l-light-grayish-blue);
+}
+
+body.dark .filter a,
+body.dark .filter {
+    color: var(--d-very-dark-grayish-blue)
+}
+
+body.dark .filter a.selected {
+    color: hsl(220, 98%, 61%);
+}
+
+body.dark .filter a:hover {
+    color: var(--l-light-grayish-blue);
+}
+
+body.dark footer {
+    color: var(--d-very-dark-grayish-blue)
+}
+
+body.dark input[type="checkbox"]:not(:checked):hover {
+    border-color: transparent;
+    background-image: linear-gradient(var(--d-very-dark-desaturated-blue), var(--d-very-dark-desaturated-blue)), linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+/* Drag and Drop */
+
+.dragging-clone {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.placeholder {
+    background-color: #ddd;
+    border: 2px dashed #aaa;
+    height: 50px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .task:hover .remove {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 1075px) {
+    .wrapper {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 875px) {
+    .wrapper {
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width: 675px) {
+    .filter>span {
+        margin-right: 1rem;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    body {
+        background-image: url("images/bg-mobile-light.jpg");
+    }
+
+    body.dark {
+        background-image: url("images/bg-mobile-dark.jpg");
+    }
+
+    main {
+        margin-bottom: 1rem;
+    }
+
+    .wrapper {
+        width: 90%;
+    }
+
+    .filter>span {
+        margin-right: 1rem;
+    }
+
+    .filter div {
+        display: none;
+    }
+
+    .filter-mobile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .filter-mobile div {
+        width: 50%;
+    }
+
+    .filter-mobile a {
+        margin: 0 auto;
+    }
+}
