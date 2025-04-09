@@ -40,26 +40,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     const data = [
         {
+            id: 1,
             "title": "Complete online Javascript course",
             "completed": false
         },
         {
+            id: 2,
             "title": "Jog around the park 3x",
             "completed": false
         },
         {
+            id: 3,
             "title": "10 minutes meditation",
             "completed": false
         },
         {
+            id: 4,
             "title": "Read for 1 hour",
             "completed": false
         },
         {
+            id: 5,
             "title": "Pick up groceries",
             "completed": false
         },
         {
+            id: 6,
             "title": "Complete TodoApp on Frontend Mentor",
             "completed": false
         }
@@ -67,32 +73,35 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     const tasklist = document.querySelector('.tasklist');
     let tasks = localStorage.getItem("tasks") !== null ? JSON.parse(localStorage.getItem("tasks")) : data
+    let category = localStorage.getItem("category") !== null ? localStorage.getItem("category") : "all"
     let filteredTasks = tasks
 
-    console.log(tasks);
-
-    loadTasks(tasks)
-
+    filterTasks(category)
     updateCount()
 
     tasklist.addEventListener('click', (e) => {
-        const index = e.target.parentElement.getAttribute("data-index")
+        const id = e.target.parentElement.getAttribute("data-id")
         if (e.target.classList.contains('cbComplete')) {
             e.target.toggleAttribute("checked")
             let checked = e.target.getAttribute("checked") !== null
             e.target.parentElement.classList.toggle("completed")
-            tasks[index].completed = checked
+            const item = tasks.find(obj => obj.id == id);
+            item.completed = checked
+            category = localStorage.getItem("category")
+            filterTasks(category)
             updateCount()
         }
         if (e.target.classList.contains('remove')) {
-            tasks.splice(index, 1)
+            tasks = tasks.filter(e => e.id != id)
+            console.log(id);
+            console.log(tasks);
             e.target.parentElement.remove()
             updateCount()
         }
         saveTasks()
     });
 
-    [document.querySelector(".filter"),document.querySelector(".filter-mobile")].forEach(element => {
+    [document.querySelector(".filter"), document.querySelector(".filter-mobile")].forEach(element => {
         element.addEventListener('click', (e) => {
             e.preventDefault()
             if (e.target.classList.contains('clearCompleted')) {
@@ -120,17 +129,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
 
     function loadTasks(tasks) {
+        let noTasks = document.querySelector(".notasks")
+        noTasks.style.display = tasks.length == 0 ? "block" : "none"
         tasklist.innerHTML = ""
-        tasks.forEach((element, index) => {
-            populateTask(element, index)
+        tasks.forEach((element) => {
+            populateTask(element)
         });
     }
 
-    function populateTask(task, index) {
+    function populateTask(task) {
+        console.log(task);
         let taskDiv = document.createElement("div")
         taskDiv.className = `task${task.completed ? " completed" : ""}`
         taskDiv.setAttribute("draggable", "true")
-        taskDiv.setAttribute("data-index", index)
+        taskDiv.setAttribute("data-id", task.id)
         let cbTask = document.createElement("input")
         cbTask.type = "checkbox"
         cbTask.className = "cbComplete"
@@ -142,11 +154,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function addNewTask(taskText) {
-        let newTask = { title: taskText, completed: false }
+        let newId = Math.max(...tasks.map(e => e.id)) + 1
+        let newTask = { id: newId, title: taskText, completed: false }
         tasks.push(newTask)
-        populateTask(newTask, tasks.indexOf(newTask))
+        // populateTask(newTask, tasks.indexOf(newTask))
         updateCount()
         saveTasks()
+        category = localStorage.getItem("category")
+        filterTasks(category)
     }
 
     function clearCompledted() {
@@ -161,18 +176,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function filterTasks(category) {
         if (category == "active") {
+            localStorage.setItem("category", "active")
             filteredTasks = tasks.filter(e => !e.completed)
         }
 
         if (category == "all") {
+            localStorage.setItem("category", "all")
             filteredTasks = tasks
         }
 
         if (category == "completed") {
+            localStorage.setItem("category", "completed")
             filteredTasks = tasks.filter(e => e.completed)
         }
 
-        console.log(filteredTasks);
         loadTasks(filteredTasks)
     }
 
