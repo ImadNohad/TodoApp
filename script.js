@@ -89,13 +89,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             item.completed = checked
             category = localStorage.getItem("category")
             filterTasks(category)
+            showToast(`Task marked as ${checked ? "Completed" : "Active" }.`)
             updateCount()
         }
         if (e.target.classList.contains('remove')) {
             tasks = tasks.filter(e => e.id != id)
-            console.log(id);
-            console.log(tasks);
             e.target.parentElement.remove()
+            showToast()
             updateCount()
         }
         saveTasks()
@@ -123,8 +123,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const newTask = document.querySelector("#txtNew")
     newTask.addEventListener("keyup", function (event) {
         if (event.keyCode == 13) {
-            addNewTask(event.target.value)
-            event.target.value = ""
+            addNewTask(event.target)
         }
     })
 
@@ -153,15 +152,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         tasklist.appendChild(taskDiv)
     }
 
-    function addNewTask(taskText) {
+    function addNewTask(input) {
         let newId = Math.max(...tasks.map(e => e.id)) + 1
-        let newTask = { id: newId, title: taskText, completed: false }
+        let newTask = { id: newId, title: input.value, completed: false }
         tasks.push(newTask)
-        // populateTask(newTask, tasks.indexOf(newTask))
         updateCount()
         saveTasks()
         category = localStorage.getItem("category")
         filterTasks(category)
+        showToast("Task added successfully.")
+        input.value = ""
     }
 
     function clearCompledted() {
@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         tasks = tasks.filter((e) => !e.completed)
         updateCount()
         saveTasks()
+        showToast("Completed tasks cleared successfully.")
     }
 
     function filterTasks(category) {
@@ -208,4 +209,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         document.body.classList.toggle("dark")
         this.src = dark ? "images/icon-moon.svg" : "images/icon-sun.svg"
     })
+
+    // Toast 
+    const toast = document.getElementById("toast");
+    function showToast(message = "Task removed successfully.") {
+        const toastMessage = document.getElementById("toast-message");
+        toastMessage.textContent = message;
+        toast.classList.add("show");
+        toastTimeout = setTimeout(hideToast, 2000);
+    }
+
+    const toastClose = document.getElementById("toast-close");
+    toastClose.addEventListener("click", hideToast)
+    function hideToast() {
+        toast.classList.remove("show");
+    }
 })
+

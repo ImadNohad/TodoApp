@@ -294,6 +294,58 @@ body.dark input[type="checkbox"]:not(:checked):hover {
     background-clip: padding-box, border-box;
 }
 
+/* Toast  */
+
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    max-width: 90vw;
+    background-color: #000;
+    color: #fff;
+    text-align: left;
+    border: 1px solid #8b8b8b;
+    border-radius: 12px;
+    padding: 14px 18px;
+    position: fixed;
+    z-index: 1000;
+    top: 20px;
+    right: 1%;
+    opacity: 0;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+}
+
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+#toast-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+
+@media (max-width: 480px) {
+    #toast {
+        font-size: 15px;
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    #toast-close {
+        font-size: 18px;
+    }
+}
+
 /* Drag and Drop */
 
 .dragging-clone {
@@ -315,8 +367,8 @@ body.dark input[type="checkbox"]:not(:checked):hover {
     transition: all 0.2s ease-in-out;
 }
 
-@media(hover: hover) and (pointer: fine) {
-    .task:hover .remove {
+@media (hover: none) {
+    .task .remove {
         display: block;
     }
 }
