@@ -212,10 +212,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Toast 
     const toast = document.getElementById("toast");
+    let toastTimeout;
     function showToast(message = "Task removed successfully.") {
         const toastMessage = document.getElementById("toast-message");
         toastMessage.textContent = message;
         toast.classList.add("show");
+        clearTimeout(toastTimeout);
         toastTimeout = setTimeout(hideToast, 2000);
     }
 
