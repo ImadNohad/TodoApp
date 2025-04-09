@@ -128,7 +128,7 @@ input[type="checkbox"]:not(:checked):hover {
 .taskList {
     width: 100%;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .task,
@@ -155,7 +155,7 @@ input[type="checkbox"]:not(:checked):hover {
 }
 
 .task:first-child {
-    border-radius: 5px 5px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 
 .task p {
@@ -178,7 +178,7 @@ input[type="checkbox"]:not(:checked):hover {
 .filter {
     color: var(--l-dark-grayish-blue);
     font-size: 0.85rem;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 10px 10px;
     justify-content: space-between;
     margin-bottom: 1rem;
 }
@@ -217,7 +217,7 @@ body.dark .filter-mobile a.selected {
     background-color: white;
     display: none;
     justify-content: space-around;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 footer {
@@ -299,7 +299,7 @@ body.dark input[type="checkbox"]:not(:checked):hover {
     color: #fff;
     text-align: left;
     border: 1px solid #8b8b8b;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 14px 18px;
     position: fixed;
     z-index: 1000;
