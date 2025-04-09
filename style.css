@@ -64,10 +64,6 @@ a {
     text-decoration: none;
 }
 
-/* a:visited {
-    color: var(--l-light-grayish-blue);
-} */
-
 .wrapper {
     width: 38%;
     margin: 0 auto;
@@ -176,6 +172,7 @@ input[type="checkbox"]:not(:checked):hover {
 .notasks {
     display: none;
     color: var(--l-dark-grayish-blue);
+    border-radius: 5px 5px 0 0;
 }
 
 .filter {
@@ -196,9 +193,7 @@ input[type="checkbox"]:not(:checked):hover {
 .filter a:active,
 .filter-mobile a:active,
 body.dark .filter a.selected,
-body.dark .filter-mobile a.selected,
-body.dark .filter a:hover,
-body.dark .filter-mobile a:hover {
+body.dark .filter-mobile a.selected {
     color: hsl(220, 98%, 61%);
 }
 
@@ -222,7 +217,7 @@ body.dark .filter-mobile a:hover {
     background-color: white;
     display: none;
     justify-content: space-around;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 footer {
@@ -370,6 +365,13 @@ body.dark input[type="checkbox"]:not(:checked):hover {
 @media (hover: none) {
     .task .remove {
         display: block;
+    }
+
+    .filter a:hover,
+    .filter-mobile a:hover,
+    body.dark .filter a:hover,
+    body.dark .filter-mobile a:hover {
+        color: hsl(220, 98%, 61%);
     }
 }
 
