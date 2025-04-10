@@ -1,73 +1,40 @@
-
-// const dragList = document.querySelector('.taskList');
-// let draggedItem = null;
-
-// dragList.addEventListener('dragstart', handleDragStart);
-// dragList.addEventListener('dragover', handleDragOver);
-// dragList.addEventListener('drop', handleDrop);
-
-// function handleDragStart(event) {
-//     draggedItem = event.target;
-//     event.dataTransfer.effectAllowed = 'move';
-//     event.dataTransfer.setData('text/html', draggedItem.innerHTML);
-//     event.target.style.opacity = '0.5';
-// }
-
-// function handleDragOver(event) {
-//     event.preventDefault();
-//     event.dataTransfer.dropEffect = 'move';
-//     const targetItem = event.target;
-//       if (targetItem !== draggedItem && targetItem.classList.contains('task')) {
-//         draggedItem.style.top -= event.clientY
-//       }
-// }
-
-// function handleDrop(event) {
-//     event.preventDefault();
-//     const targetItem = event.target;
-//     if (targetItem !== draggedItem && targetItem.classList.contains('task')) {
-//         if (event.clientY > targetItem.getBoundingClientRect().top + (targetItem.offsetHeight / 2)) {
-//             targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
-//         } else {
-//             targetItem.parentNode.insertBefore(draggedItem, targetItem);
-//         }
-//     }
-//     draggedItem.style.opacity = '';
-//     draggedItem = null;
-// }
-
 document.addEventListener("DOMContentLoaded", function (event) {
-
     const data = [
         {
             id: 1,
             "title": "Complete online Javascript course",
-            "completed": false
+            "completed": false,
+            order: 1
         },
         {
             id: 2,
             "title": "Jog around the park 3x",
-            "completed": false
+            "completed": false,
+            order: 2
         },
         {
             id: 3,
             "title": "10 minutes meditation",
-            "completed": false
+            "completed": false,
+            order: 3
         },
         {
             id: 4,
             "title": "Read for 1 hour",
-            "completed": false
+            "completed": false,
+            order: 4
         },
         {
             id: 5,
             "title": "Pick up groceries",
-            "completed": false
+            "completed": false,
+            order: 5
         },
         {
             id: 6,
             "title": "Complete TodoApp on Frontend Mentor",
-            "completed": false
+            "completed": false,
+            order: 6
         }
     ]
 
@@ -89,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             item.completed = checked
             category = localStorage.getItem("category")
             filterTasks(category)
-            showToast(`Task marked as ${checked ? "Completed" : "Active" }.`)
+            showToast(`Task marked as ${checked ? "Completed" : "Active"}.`)
             updateCount()
         }
         if (e.target.classList.contains('remove')) {
@@ -99,9 +66,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             updateCount()
         }
         saveTasks()
-    });
+    }, true);
 
-    [document.querySelector(".filter"), document.querySelector(".filter-mobile")].forEach(element => {
+    let filters = [document.querySelector(".filter"), document.querySelector(".filter-mobile")]
+
+    filters.forEach(element => {
         element.addEventListener('click', (e) => {
             e.preventDefault()
             if (e.target.classList.contains('clearCompleted')) {
@@ -131,13 +100,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let noTasks = document.querySelector(".notasks")
         noTasks.style.display = tasks.length == 0 ? "block" : "none"
         tasklist.innerHTML = ""
+        tasks.sort((a, b) => a.order - b.order)
         tasks.forEach((element) => {
             populateTask(element)
         });
     }
 
     function populateTask(task) {
-        console.log(task);
         let taskDiv = document.createElement("div")
         taskDiv.className = `task${task.completed ? " completed" : ""}`
         taskDiv.setAttribute("draggable", "true")
@@ -148,13 +117,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (task.completed) cbTask.setAttribute("checked", "")
         taskDiv.appendChild(cbTask)
         taskDiv.innerHTML += `<p class="taskText">${task.title}</p><img class="remove" src="images/icon-cross.svg" alt="">`
-        console.log(taskDiv);
         tasklist.appendChild(taskDiv)
+        taskDiv.addEventListener("dragstart", dragAndDrop)
     }
 
     function addNewTask(input) {
         let newId = Math.max(...tasks.map(e => e.id)) + 1
-        let newTask = { id: newId, title: input.value, completed: false }
+        let order = Math.max(...tasks.map(e => e.order)) + 1
+        let newTask = { id: newId, title: input.value, completed: false, order: order }
         tasks.push(newTask)
         updateCount()
         saveTasks()
@@ -226,5 +196,77 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function hideToast() {
         toast.classList.remove("show");
     }
-})
 
+    function dragAndDrop(event) {
+        let originalItem = event.target;
+
+        console.log(originalItem);
+
+        if (event.target.classList.contains('cbComplete')) {
+            return;
+        }
+
+        const clone = originalItem.cloneNode(true);
+        clone.classList.add('dragging');
+        document.body.appendChild(clone);
+
+        const rect = originalItem.getBoundingClientRect();
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+
+        const placeholder = document.createElement('div');
+        placeholder.classList.add('placeholder');
+        placeholder.style.height = `${rect.height}px`;
+        originalItem.parentNode.insertBefore(placeholder, originalItem);
+        originalItem.style.display = 'none';
+
+        let replacedItem = null
+        const onMouseMove = (e) => {
+            clone.style.top = `${e.clientY - rect.height / 2}px`;
+            clone.style.left = `${e.clientX - rect.width / 2}px`;
+
+            const list = document.querySelector('.tasklist');
+            const items = Array.from(list.children).filter(
+                (child) => child !== clone && child !== placeholder
+            );
+
+            let newPlaceholderIndex = items.length;
+            for (let i = 0; i < items.length; i++) {
+                const itemRect = items[i].getBoundingClientRect();
+                if (e.clientY < itemRect.top + itemRect.height / 2) {
+                    newPlaceholderIndex = i;
+                    break;
+                }
+            }
+
+            list.insertBefore(placeholder, items[newPlaceholderIndex]);
+        };
+
+        const onMouseUp = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+
+            tasklist.replaceChild(originalItem, placeholder);
+            originalItem.style.display = '';
+            document.body.removeChild(clone);
+
+            // Optional: Update the order in your data model here
+            Array.from(tasklist.children).forEach((task, index) => {
+                tasks.forEach(element => {
+                    let taskId = Number(task.getAttribute("data-id"))
+                    if (element.id == taskId) {
+                        element.order = index + 1
+                        return
+                    }
+                });
+
+            })
+            saveTasks()
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+})

@@ -96,6 +96,12 @@ a {
     margin-bottom: 1rem;
 }
 
+.task {
+    cursor: move;
+    will-change: transform;
+    transition: 0.25s ease transform;
+}
+
 input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -125,7 +131,7 @@ input[type="checkbox"]:not(:checked):hover {
     flex: 8
 }
 
-.taskList {
+.tasklist {
     width: 100%;
     background-color: white;
     border-radius: 10px;
@@ -234,6 +240,7 @@ body.dark {
     background-image: url("images/bg-desktop-dark.jpg");
 }
 
+body.dark .tasklist,
 body.dark .newTask,
 body.dark .task,
 body.dark .notasks,
@@ -295,7 +302,7 @@ body.dark input[type="checkbox"]:not(:checked):hover {
     visibility: hidden;
     min-width: 250px;
     max-width: 90vw;
-    background-color:black;
+    background-color: black;
     color: white;
     border: 1px solid black;
     text-align: left;
@@ -320,7 +327,7 @@ body.dark #toast {
     color: black;
     border: 1px solid black;
 
-    
+
 }
 
 #toast.show {
@@ -358,26 +365,32 @@ body.dark #toast-close {
 
 /* Drag and Drop */
 
-.dragging-clone {
+.dragging {
     position: absolute;
-    pointer-events: none;
-    opacity: 0.8;
+    background-color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1.25rem;
+    border-radius: 10px;
     z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 1rem;
+    pointer-events: none;
+    box-shadow: 0px 0px 45px -21px rgba(71,71,71,1);
 }
 
 .placeholder {
-    background-color: #ddd;
-    border: 2px dashed #aaa;
-    height: 50px;
+    background-color: #efefefa7;
     margin-bottom: 10px;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
-@media (hover: none), (pointer: coarse) {
+body.dark .placeholder {
+    background-color: var(--d-very-dark-grayish-blue);
+}
+
+@media (hover: none),
+(pointer: coarse) {
     .task .remove {
         display: block;
     }
