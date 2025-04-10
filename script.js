@@ -200,12 +200,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function dragAndDrop(event) {
         let originalItem = event.target;
 
-        console.log(originalItem);
-
-        if (event.target.classList.contains('cbComplete')) {
-            return;
-        }
-
         const clone = originalItem.cloneNode(true);
         clone.classList.add('dragging');
         document.body.appendChild(clone);
@@ -222,13 +216,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         originalItem.parentNode.insertBefore(placeholder, originalItem);
         originalItem.style.display = 'none';
 
-        let replacedItem = null
-        const onMouseMove = (e) => {
-            clone.style.top = `${e.clientY - rect.height / 2}px`;
-            clone.style.left = `${e.clientX - rect.width / 2}px`;
+        const offsetX = event.clientX - clone.getBoundingClientRect().left;
+        const offsetY = event.clientY - clone.getBoundingClientRect().top;
 
-            const list = document.querySelector('.tasklist');
-            const items = Array.from(list.children).filter(
+        const onMouseMove = (e) => {
+            clone.style.top = `${e.clientY - offsetY}px`;
+            clone.style.left = `${e.clientX - offsetX}px`;
+
+            const items = Array.from(tasklist.children).filter(
                 (child) => child !== clone && child !== placeholder
             );
 
@@ -237,11 +232,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 const itemRect = items[i].getBoundingClientRect();
                 if (e.clientY < itemRect.top + itemRect.height / 2) {
                     newPlaceholderIndex = i;
+                    console.log(newPlaceholderIndex);
+
                     break;
                 }
             }
 
-            list.insertBefore(placeholder, items[newPlaceholderIndex]);
+            tasklist.insertBefore(placeholder, items[newPlaceholderIndex]);
         };
 
         const onMouseUp = () => {
@@ -252,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             originalItem.style.display = '';
             document.body.removeChild(clone);
 
-            // Optional: Update the order in your data model here
             Array.from(tasklist.children).forEach((task, index) => {
                 tasks.forEach(element => {
                     let taskId = Number(task.getAttribute("data-id"))
@@ -261,8 +257,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         return
                     }
                 });
-
             })
+
             saveTasks()
         };
 
