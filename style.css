@@ -375,7 +375,7 @@ body.dark #toast-close {
     gap: 1.25rem;
     border-radius: 10px;
     z-index: 1000;
-    pointer-events: none;
+    cursor: grabbing;
     box-shadow: 0px 0px 45px -21px rgba(71,71,71,1);
 }
 

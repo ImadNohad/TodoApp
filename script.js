@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function (event) {
+    //Données initiales
     const data = [
         {
             id: 1,
@@ -38,15 +39,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     ]
 
+    //Liste des tâches
     const tasklist = document.querySelector('.tasklist');
+
+    //Récupération des tâches depuis localStorage si non null, sinon depuis le tableau data
     let tasks = localStorage.getItem("tasks") !== null ? JSON.parse(localStorage.getItem("tasks")) : data
+
+    //Récupération de la catégorie du filtre depuis localStorage si non null, sinon "all" est appliqué
     let category = localStorage.getItem("category") !== null ? localStorage.getItem("category") : "all"
     let filteredTasks = tasks
 
+    //filtrage des tâches selon la catégorie
     filterTasks(category)
+
+    //Mise à jour du compteur des tâches
     updateCount()
 
+    //Ecoute de l'événement click sur toute la liste des tâches (Event Délégation)
     tasklist.addEventListener('click', (e) => {
+
+        //Click sur le checkbox Complete
         const id = e.target.parentElement.getAttribute("data-id")
         if (e.target.classList.contains('cbComplete')) {
             e.target.toggleAttribute("checked")
@@ -59,17 +71,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
             showToast(`Task marked as ${checked ? "Completed" : "Active"}.`)
             updateCount()
         }
+
+        //Click sur le bouton Remove
         if (e.target.classList.contains('remove')) {
             tasks = tasks.filter(e => e.id != id)
             e.target.parentElement.remove()
             showToast()
             updateCount()
         }
+
+        //Sauvegarde des tâches du tableau dans localStorage
         saveTasks()
     }, true);
 
     let filters = [document.querySelector(".filter"), document.querySelector(".filter-mobile")]
 
+    //Application du filtre
     filters.forEach(element => {
         element.addEventListener('click', (e) => {
             e.preventDefault()
@@ -89,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 
+    //Ajouter une nouvelle tâche
     const newTask = document.querySelector("#txtNew")
     newTask.addEventListener("keyup", function (event) {
         if (event.keyCode == 13) {
@@ -96,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     })
 
+    //Affichage et ordre des tâches
     function loadTasks(tasks) {
         let noTasks = document.querySelector(".notasks")
         noTasks.style.display = tasks.length == 0 ? "block" : "none"
@@ -106,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    //Affichage d'une tâche individuelle
     function populateTask(task) {
         let taskDiv = document.createElement("div")
         taskDiv.className = `task${task.completed ? " completed" : ""}`
@@ -121,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         taskDiv.addEventListener("dragstart", dragAndDrop)
     }
 
+    //Fonction d'Ajout d'une nouvelle tâche
     function addNewTask(input) {
         let newId = Math.max(...tasks.map(e => e.id)) + 1
         let order = Math.max(...tasks.map(e => e.order)) + 1
@@ -134,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         input.value = ""
     }
 
+    //Suppresion des tâches marquées comme complete
     function clearCompledted() {
         const completed = tasklist.querySelectorAll(".completed")
         Array.from(completed).forEach(element => {
@@ -145,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         showToast("Completed tasks cleared successfully.")
     }
 
+    //Filtrage des tâches par catégorie
     function filterTasks(category) {
         if (category == "active") {
             localStorage.setItem("category", "active")
@@ -232,8 +255,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 const itemRect = items[i].getBoundingClientRect();
                 if (e.clientY < itemRect.top + itemRect.height / 2) {
                     newPlaceholderIndex = i;
-                    console.log(newPlaceholderIndex);
-
                     break;
                 }
             }
