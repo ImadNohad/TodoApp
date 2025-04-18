@@ -75,9 +75,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //Click sur le bouton Remove
         if (e.target.classList.contains('remove')) {
             tasks = tasks.filter(e => e.id != id)
-            e.target.parentElement.remove()
-            showToast()
-            updateCount()
+            e.target.parentElement.classList.add("hidden")
+            e.target.parentElement.classList.remove("visible")
+            setTimeout(() => {
+                e.target.parentElement.remove()
+                showToast()
+                updateCount()
+            }, 300);
         }
 
         //Sauvegarde des tâches du tableau dans localStorage
@@ -120,13 +124,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         noTasks.style.display = tasks.length == 0 ? "block" : "none"
         tasklist.innerHTML = ""
         tasks.sort((a, b) => a.order - b.order)
-        tasks.forEach((element) => {
-            populateTask(element)
+        tasks.forEach((element, index) => {
+            let last = index == tasks.length - 1
+            populateTask(element, last)
         });
     }
 
     //Affichage d'une tâche individuelle
-    function populateTask(task) {
+    function populateTask(task, last) {
         let taskDiv = document.createElement("div")
         taskDiv.className = `task${task.completed ? " completed" : ""}`
         taskDiv.setAttribute("draggable", "true")
@@ -143,16 +148,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     //Fonction d'Ajout d'une nouvelle tâche
     function addNewTask(input) {
-        let newId = Math.max(...tasks.map(e => e.id)) + 1
-        let order = Math.max(...tasks.map(e => e.order)) + 1
-        let newTask = { id: newId, title: input.value, completed: false, order: order }
-        tasks.push(newTask)
-        updateCount()
-        saveTasks()
-        category = localStorage.getItem("category")
-        filterTasks(category)
-        showToast("Task added successfully.")
-        input.value = ""
+        let valid = input.value.length > 0
+        let toastMessage = valid ? "Task added successfully." : "Please enter a value."
+        if (valid) {
+            let newId = Math.max(...tasks.map(e => e.id)) + 1
+            let order = Math.max(...tasks.map(e => e.order)) + 1
+            let newTask = { id: newId, title: input.value, completed: false, order: order }
+            tasks.push(newTask)
+            updateCount()
+            saveTasks()
+            category = localStorage.getItem("category")
+            filterTasks(category)
+            input.value = ""
+        }
+        showToast(toastMessage)
     }
 
     //Suppresion des tâches marquées comme complete

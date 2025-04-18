@@ -133,17 +133,25 @@ input[type="checkbox"]:not(:checked):hover {
 
 .tasklist {
     width: 100%;
-    background-color: white;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
 }
 
 .task,
 .notasks {
+    background-color: white;
     margin-bottom: 0;
     border-bottom: 1px solid var(--l-very-light-grayish-blue);
     border-radius: 0;
     cursor: grab;
-    /* transition: transform 0.3s ease-in-out; */
+    transition: opacity 0.5s linear;
+}
+
+.task.hidden {
+    opacity: 0;
+}
+
+.task.visible {
+    opacity: 1;
 }
 
 .task input[type="checkbox"]:checked~.taskText {
@@ -377,15 +385,14 @@ body.dark #toast-close {
     width: 100%;
     align-items: center;
     gap: 1.25rem;
-    /* border-radius: 10px; */
     z-index: 1000;
     cursor: grabbing;
-    box-shadow: 0px 0px 45px -21px rgba(71,71,71,1);
+    box-shadow: 0px 0px 45px -21px rgba(71, 71, 71, 1);
 }
 
 .placeholder {
-    background-color: hsla(235, 32%, 92%, 0.348);;
-    margin-bottom: 10px;
+    background-color: hsla(235, 32%, 92%, 0.348);
+    ;
     transition: transform 0.2s ease-in-out;
 }
 
